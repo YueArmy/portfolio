@@ -360,7 +360,7 @@ export function ForceGraph() {
             const dy = a.y - b.y;
             let dist = Math.sqrt(dx * dx + dy * dy);
             if (dist < 1) dist = 1;
-            const force = (REPULSION_K / (dist * dist)) * temp;
+            const force = REPULSION_K / (dist * dist);
             const fx = (dx / dist) * force;
             const fy = (dy / dist) * force;
 

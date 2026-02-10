@@ -38,6 +38,31 @@ const GAS_CONTENT = `## 概要
 
 社内ツールのため詳細は非公開ですが、「それできるの？」と言われるような仕組みを仮説検証で作り上げるプロセスが特徴です。`;
 
+const ONE_MINUTE_HABIT_CONTENT = `## 概要
+
+「1分だけやる」をコンセプトにした習慣トラッカーアプリ。行動科学の知見を活かし、習慣化のハードルを極限まで下げることで、三日坊主を防ぎます。
+
+完全オフライン動作。アカウント不要、個人情報収集なし。
+
+## 主な機能
+
+- **1分タイマー**: まず1分だけ始める → 自然と続けたくなる仕組み
+- **習慣トラッキング**: 日々の達成を記録・可視化
+- **リマインダー通知**: ローカル通知で忘れ防止（外部サービス不使用）
+- **シンプルUI**: 迷わない、開いてすぐ使える設計
+
+## 技術的なポイント
+
+- React Native + Expo によるクロスプラットフォーム開発
+- AsyncStorage による完全ローカルデータ管理（サーバー通信なし）
+- プライバシーファースト設計: 個人情報の収集・送信ゼロ
+
+## リンク
+
+- [サポート・お問い合わせ](/apps/one-minute-habit/support)
+- [プライバシーポリシー](/apps/one-minute-habit/privacy)
+- [利用規約](/apps/one-minute-habit/terms)`;
+
 // --- 探索ログ ---
 
 const LABBIT_LOGS = [
@@ -97,6 +122,25 @@ async function main() {
   });
 
   console.log(`✔ 業務ツール開発 (id: ${businessTools.id})`);
+
+  // 1分習慣
+  const oneMinuteHabit = await prisma.project.upsert({
+    where: { slug: 'one-minute-habit' },
+    update: {},
+    create: {
+      title: '1分習慣',
+      slug: 'one-minute-habit',
+      description: '「毎日たった1分」から始める習慣トラッカーアプリ。小さな積み重ねが大きな変化を生む、行動科学ベースのシンプルなiOSアプリ。',
+      content: ONE_MINUTE_HABIT_CONTENT,
+      techStack: JSON.stringify(['React Native', 'Expo', 'AsyncStorage']),
+      imageUrl: null,
+      status: 'published',
+      featured: false,
+      publishedAt: new Date('2026-02-10'),
+    },
+  });
+
+  console.log(`✔ 1分習慣 (id: ${oneMinuteHabit.id})`);
   console.log('Seed completed');
 }
 
