@@ -8,7 +8,7 @@ interface ProjectItem {
   title: string;
   slug: string;
   description: string;
-  techStack: string;
+  techStack: unknown;
   imageUrl: string | null;
 }
 

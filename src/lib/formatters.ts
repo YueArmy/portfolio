@@ -1,23 +1,23 @@
-export function parseTechStack(json: string): string[] {
-  try {
-    const parsed = JSON.parse(json);
-    if (Array.isArray(parsed)) return parsed;
-    return [];
-  } catch {
-    return [];
+export function parseTechStack(value: unknown): string[] {
+  if (Array.isArray(value)) {
+    return value.filter((v): v is string => typeof v === 'string');
   }
+  if (typeof value === 'string') {
+    try {
+      const parsed = JSON.parse(value);
+      if (Array.isArray(parsed)) {
+        return parsed.filter((v): v is string => typeof v === 'string');
+      }
+    } catch { /* not JSON */ }
+  }
+  return [];
 }
 
-export function serializeTechStack(tags: string[]): string {
-  return JSON.stringify(tags);
-}
-
-export function techStackFromInput(input: string): string {
-  const tags = input
+export function techStackFromInput(input: string): string[] {
+  return input
     .split(',')
     .map((t) => t.trim())
     .filter(Boolean);
-  return serializeTechStack(tags);
 }
 
 export function formatDate(date: Date | string): string {

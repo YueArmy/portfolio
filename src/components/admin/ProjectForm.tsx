@@ -2,14 +2,31 @@
 
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { projectSchema, type ProjectInput } from '@/lib/validation';
+import { z } from 'zod';
 import { Input } from '@/components/ui/Input';
 import { Textarea } from '@/components/ui/Textarea';
 import { Button } from '@/components/ui/Button';
 import { parseTechStack } from '@/lib/formatters';
 
+const formSchema = z.object({
+  title: z.string().min(1, 'タイトルは必須です').max(200),
+  slug: z
+    .string()
+    .min(1, 'スラッグは必須です')
+    .max(200)
+    .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, '小文字英数字とハイフンのみ'),
+  description: z.string().min(1, '概要は必須です').max(500),
+  content: z.string().min(1, '本文は必須です'),
+  techStack: z.string().min(1, '技術スタックは必須です'),
+  imageUrl: z.string().url().nullable().optional(),
+  status: z.enum(['draft', 'published']).default('draft'),
+  featured: z.boolean().default(false),
+});
+
+type FormValues = z.infer<typeof formSchema>;
+
 interface ProjectFormProps {
-  defaultValues?: Partial<ProjectInput> & { id?: string };
+  defaultValues?: Omit<Partial<FormValues>, 'techStack'> & { id?: string; techStack?: unknown };
   onSuccess: () => void;
 }
 
@@ -21,8 +38,8 @@ export function ProjectForm({ defaultValues, onSuccess }: ProjectFormProps) {
     handleSubmit,
     formState: { errors, isSubmitting },
     setError,
-  } = useForm<ProjectInput>({
-    resolver: zodResolver(projectSchema),
+  } = useForm<FormValues>({
+    resolver: zodResolver(formSchema),
     defaultValues: {
       title: defaultValues?.title ?? '',
       slug: defaultValues?.slug ?? '',
@@ -37,15 +54,14 @@ export function ProjectForm({ defaultValues, onSuccess }: ProjectFormProps) {
     },
   });
 
-  const onSubmit = async (data: ProjectInput) => {
-    // Convert comma-separated to JSON
+  const onSubmit = async (data: FormValues) => {
     const tags = data.techStack
       .split(',')
       .map((t) => t.trim())
       .filter(Boolean);
     const payload = {
       ...data,
-      techStack: JSON.stringify(tags),
+      techStack: tags,
       imageUrl: data.imageUrl || null,
       publishedAt: data.status === 'published' ? new Date().toISOString() : null,
     };

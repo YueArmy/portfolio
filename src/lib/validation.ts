@@ -11,7 +11,7 @@ export const projectSchema = z.object({
     .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, '小文字英数字とハイフンのみ'),
   description: z.string().min(1, '概要は必須です').max(500),
   content: z.string().min(1, '本文は必須です'),
-  techStack: z.string().min(1, '技術スタックは必須です'), // JSON serialized
+  techStack: z.array(z.string()).min(1, '技術スタックは必須です'),
   imageUrl: z.string().url().nullable().optional(),
   status: z.enum(['draft', 'published']).default('draft'),
   featured: z.boolean().default(false),

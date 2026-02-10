@@ -4,7 +4,7 @@ export interface Project {
   slug: string;
   description: string;
   content: string;
-  techStack: string; // JSON serialized
+  techStack: unknown;
   imageUrl: string | null;
   status: 'draft' | 'published';
   featured: boolean;
@@ -19,7 +19,7 @@ export interface ProjectListItem {
   title: string;
   slug: string;
   description: string;
-  techStack: string;
+  techStack: unknown;
   imageUrl: string | null;
   status: 'draft' | 'published';
   featured: boolean;

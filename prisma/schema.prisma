@@ -3,7 +3,7 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
@@ -13,7 +13,7 @@ model Project {
   slug        String   @unique
   description String
   content     String
-  techStack   String // JSON serialized array (SQLite compat)
+  techStack   Json     @default("[]")
   imageUrl    String?
   status      String   @default("draft") // "draft" | "published"
   featured    Boolean  @default(false)
