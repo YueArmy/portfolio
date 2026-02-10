@@ -6,15 +6,15 @@ const prisma = new PrismaClient();
 
 const LABBIT_CONTENT = `## 概要
 
-読書を通じて語彙力を伸ばすiOSアプリ。AIが読み手のレベルに合わせたコンテンツを生成し、読んだ文章から自動で単語を抽出してフラッシュカードに変換します。
+読書を通じて語彙力を伸ばすiOSアプリ。AIが読み手のレベルに合わせたコンテンツを生成し、気になった単語を単語帳に追加してフラッシュカードで反復学習できます。
 
 App Storeで公開中。
 
 ## 主な機能
 
 - **AI読書**: ジャンルやキーワードを選ぶと、AIがレベルに合った文章を生成
-- **語彙学習**: 読んだ文章から単語を自動抽出 → フラッシュカードで反復学習
-- **多言語対応**: 日本語・英語・韓国語・中国語・スペイン語
+- **語彙学習**: 気になった単語を単語帳に追加 → フラッシュカードで反復学習
+- **多言語対応**: 日本語・英語
 - **継続の仕組み**: ストリーク（連続学習記録）で習慣化をサポート
 
 ## 技術的なポイント
@@ -78,7 +78,7 @@ async function main() {
   // Labbit
   const labbit = await prisma.project.upsert({
     where: { slug: 'labbit' },
-    update: {},
+    update: { content: LABBIT_CONTENT },
     create: {
       title: 'Labbit',
       slug: 'labbit',
