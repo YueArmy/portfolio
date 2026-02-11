@@ -22,7 +22,11 @@ App Storeで公開中。
 - SwiftUI + SwiftData によるモダンなiOSアーキテクチャ
 - OpenAI API を使ったコンテンツ生成（コスト最適化込み）
 - Apple の NaturalLanguage フレームワークで多言語テキスト解析
-- StoreKit 2 によるサブスクリプション管理`;
+- StoreKit 2 によるサブスクリプション管理
+
+## リンク
+
+- [App Store](https://apps.apple.com/us/app/labbit/id6752617165)`;
 
 const GAS_CONTENT = `## 概要
 
